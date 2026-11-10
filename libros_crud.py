@@ -35,6 +35,7 @@ def consultar_libros():
         for libro in libros:
             print(f"ID: {libro.id}, titulo: {libro.id}, autor: {libro.id}, ejemplares disponibles: {libro.ejemplares_disponibles} ")
 
+        return libros
 
 
 def buscar_libro_por_id(libro_id):
