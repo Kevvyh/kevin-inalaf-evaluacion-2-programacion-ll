@@ -10,7 +10,7 @@ class Libro(Base):
 
     __tablename__ = "libro" 
     __table_args__ = (
-        CheckConstraint("ejemplares_disponibles >= 0", name="ejemplares_positivos")
+        CheckConstraint("ejemplares_disponibles >= 0", name="ejemplares_positivos"),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True, nullable=False)
@@ -21,9 +21,6 @@ class Libro(Base):
 class Usuario(Base):
 
     __tablename__ = "usuario"
-    __table_args__ = (
-        
-    )
 
     id: Mapped[int] = mapped_column(primary_key=True, nullable=False)
     nombre: Mapped[int] = mapped_column(nullable=False)
@@ -34,7 +31,7 @@ class Prestamo(Base):
 
     __tablename__ = "prestamo"
     __table_args__ = (
-        CheckConstraint("cantidad > 0", name="cantidad_mayor_a_cero")
+        CheckConstraint("cantidad > 0", name="cantidad_mayor_a_cero"),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True, nullable=False)
