@@ -1,0 +1,74 @@
+Pregunta 1 · 4 puntos
+Muestre la definición de Prestamo, sus claves foráneas y relaciones con Libro y Usuario. Explique qué relaciona
+cada clave.
+
+Archivo y función: La definición de Prestamo se encuentra en el archivo modelos.py, en la clase hija llamada Prestamo.
+
+Código / respuesta:
+
+    class Prestamo(Base):
+
+    __tablename__ = "prestamo"
+    __table_args__ = (
+        CheckConstraint("cantidad > 0", name="cantidad_mayor_a_cero")
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True, nullable=False)
+    libro_id: Mapped[int] = mapped_column(ForeignKey("libro.id"), nullable=False)
+    usuario_id: Mapped[int] = mapped_column(ForeignKey("usuario.id"), nullable=False)
+    fecha: Mapped[str] = mapped_column(String(10), nullable=False)
+    cantidad: Mapped[int] = mapped_column (nullable=False)
+    estado: Mapped[int] = mapped_column(nullable=False)
+
+Explicación: el id es propio del prestamo, cada prestamo recibe su propio id.
+libro_id conecta el id (la primarykey) de la clase Libro relacionandola directamente cada reserva con el id de un libro propio.
+usuario_id conecta el id de la tabla o clase Usuario, haciendo que cada reserva tenga asociado a un usuario con su id.
+
+Pregunta 2 · 3 puntos
+Muestre la función que registra un libro. Señale dónde utiliza session.add() y cómo confirma la persistencia.
+
+Archivo y función: La funcion se encuentra en libro_crud y en la funcion crear_libro
+
+Código / respuesta:
+
+    def crear_libro(titulo, autor, ejemplares_disponibles):
+        if not titulo.strip() and autor.strip():
+            raise ValueError("El titulo y el autor no pueden estar vacios.")
+
+        if ejemplares_disponibles < 0:
+            raise ValueError("La cantidad de ejemplares deben ser positivos")
+
+        with Session(engine) as session:
+            nuevo_libro = Libro(titulo=titulo, autor=autor, 
+                             ejemplares_disponibles=ejemplares_disponibles)
+
+            session.add(nuevo_libro)
+            session.commit()
+            print(f"El libro {titulo} ha sido agregado exitosamente.")
+            print(f"El libro ha sido guardado con el id: {nuevo_libro.id}")
+            return nuevo_libro.id
+
+Explicación: session.add(nuevo_libro) se utiliza cuando ya se guardo en una variable los datos recibidos por la funcion de crear_libro
+al inciar se hacen las validaciones de que contenga si o si titulo y autor y que los ejemplares sean positivos.
+
+
+Pregunta 4 · 4 puntos
+Muestre el código que verifica la disponibilidad antes de registrar un préstamo. ¿Qué ocurre cuando se solicita
+una cantidad superior al ejemplares_disponibles?
+
+Archivo y función: Se encuentra en prestamos_crud y en la funcion de registrar_prestamos
+
+Código / respuesta:
+
+        if not libro:
+            raise ValueError(f"No se ha encontrado un libro con el id: {libro_id}")
+        if libro.ejemplares_disponibles < 0:
+            raise ValueError("No hay ejemplares disponibles para este libro.")
+
+        if not usuario:
+            raise ValueError(f"No se ha encontrado un usuario con el id: {usuario_id}")
+
+
+Explicación: cuando se guardo en una variable la consulta sobre los ejemplares disponibles, se realiza un condicional donde si
+los ejemplares dispobles son menores a 0, se devuele un error de valor para que no puedan solicitar el libro.
+
