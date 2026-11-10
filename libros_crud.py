@@ -15,7 +15,7 @@ def crear_libro(titulo, autor, ejemplares_disponibles):
         raise ValueError("La cantidad de ejemplares deben ser positivos")
 
     with Session(engine) as session:
-        nuevo_libro = Libro(titulo=titulo, autor=ejemplares_disponibles, 
+        nuevo_libro = Libro(titulo=titulo, autor=autor, 
                             ejemplares_disponibles=ejemplares_disponibles)
 
         session.add(nuevo_libro)
