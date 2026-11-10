@@ -33,7 +33,7 @@ def consultar_libros():
             return []
 
         for libro in libros:
-            print(f"ID: {libro.id}, titulo: {libro.id}, autor: {libro.id}, ejemplares disponibles: {libro.ejemplares_disponibles} ")
+            print(f"ID: {libro.id}, titulo: {libro.titulo}, autor: {libro.autor}, ejemplares disponibles: {libro.ejemplares_disponibles} ")
 
         return libros
 
